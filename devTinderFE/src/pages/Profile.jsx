@@ -1,4 +1,3 @@
-import { EmailIcon, UserIcon } from '../utils/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ErrorMessage from '../components/atoms/ErrorMessage';
@@ -19,10 +18,10 @@ const Profile = () => {
   const [gender, setGender] = useState(user?.gender || '');
   const [photo, setPhoto] = useState(user?.photo || '');
   const [about, setAbout] = useState(user?.about || '');
-  const [skills, setSkills] = useState(user?.skills || '');
+  const [skills, setSkills] = useState(user?.skills?.join(', ') || '');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [saved, setSaved] = useState(false); 
+  const [saved, setSaved] = useState(false);
 
   const saveHandler = async (e) => {
     e.preventDefault();
@@ -35,11 +34,14 @@ const Profile = () => {
         gender,
         photo,
         about,
-        skills,
+        skills: skills
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
       });
-      dispatch(addUser(data.user)); 
+      dispatch(addUser(data.user));
       setSaved(true);
-      setTimeout(() => setSaved(false), 3000); 
+      setTimeout(() => setSaved(false), 3000);
     } catch (err) {
       setError(err?.response?.data?.message || 'Failed to save. Try again.');
     } finally {
@@ -111,7 +113,10 @@ const Profile = () => {
           gender={gender}
           photo={photo}
           about={about}
-          skills={skills}
+          skills={skills
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)}
         />
       </div>
     </div>

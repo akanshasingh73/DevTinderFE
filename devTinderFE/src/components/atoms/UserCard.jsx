@@ -34,11 +34,6 @@ const UserCard = ({ name, age, gender, photo, about, skills }) => {
             ))}
           </div>
         )}
-
-        <div className='card-actions justify-end mt-2'>
-          <button className='btn btn-error'>👎 Pass</button>
-          <button className='btn btn-primary'>👍 Like</button>
-        </div>
       </div>
     </div>
   );
